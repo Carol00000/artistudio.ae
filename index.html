@@ -72,6 +72,8 @@
     pointer-events: none;
     white-space: nowrap;
   }
+
+  /* ── Grid ──────────────────────────────────────────── */
   .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -89,9 +91,10 @@
     background: linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.6) 100%);
     transition: opacity 0.3s;
     pointer-events: none;
+    z-index: 1;
   }
-  .photo-item:hover::after { opacity: 0.8; }
-  .photo-item:hover img { transform: scale(1.04); }
+  .photo-item:hover::after { opacity: 0.85; }
+  .photo-item:hover img { transform: scale(1.06); }
   .photo-item img {
     position: absolute;
     inset: 0;
@@ -103,6 +106,34 @@
     transition: transform 0.5s ease, opacity 0.35s ease;
   }
   .photo-item img.fading { opacity: 0; }
+
+  /* Hover expand icon */
+  .hover-hint {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+  .photo-item:hover .hover-hint { opacity: 1; }
+  .hover-hint-icon {
+    width: 44px; height: 44px;
+    border: 1.5px solid rgba(255,255,255,0.75);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(0,0,0,0.35);
+    backdrop-filter: blur(4px);
+    transition: transform 0.2s;
+  }
+  .photo-item:hover .hover-hint-icon { transform: scale(1.1); }
+  .hover-hint-icon svg {
+    width: 18px; height: 18px;
+    stroke: #fff; fill: none; stroke-width: 1.5;
+  }
 
   /* Grid placement */
   .photo-item:nth-child(1) { grid-column: 1;     grid-row: 1 / 3; background: #8a7060; }
@@ -120,6 +151,7 @@
   .price  { font-size: 0.75rem; font-weight: 500; color: rgba(255,255,255,0.9); letter-spacing: 0.02em; }
   .author { font-size: 0.65rem; color: rgba(255,255,255,0.65); font-weight: 300; letter-spacing: 0.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
+  /* ── Pagination ─────────────────────────────────────── */
   .pagination {
     display: flex; align-items: center;
     justify-content: space-between;
@@ -139,7 +171,115 @@
   .arrow-btn:disabled { opacity: 0.25; cursor: default; pointer-events: none; }
   .quote-mark { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--text-light); line-height: 1; opacity: 0.5; }
 
-  /* Responsive */
+  /* ── Lightbox ───────────────────────────────────────── */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+  }
+  .lightbox.active {
+    display: flex;
+    animation: lbFadeIn 0.3s ease both;
+  }
+  .lb-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.93);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+  @keyframes lbFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  .lb-inner {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    max-width: 92vw;
+    max-height: 92vh;
+    animation: lbSlideUp 0.35s ease both;
+    cursor: default;
+  }
+  @keyframes lbSlideUp {
+    from { opacity: 0; transform: translateY(20px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0)    scale(1); }
+  }
+  .lb-inner img {
+    max-width: 88vw;
+    max-height: 78vh;
+    object-fit: contain;
+    border-radius: 3px;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+    display: block;
+    transition: opacity 0.2s ease;
+  }
+  .lb-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 0.25rem;
+  }
+  .lb-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem; font-weight: 400;
+    color: #fff;
+  }
+  .lb-price {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.06em;
+  }
+  /* Counter badge */
+  .lb-counter {
+    position: fixed; top: 1.4rem; left: 50%; transform: translateX(-50%);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.4);
+    z-index: 1003;
+  }
+  /* Close */
+  .lb-close {
+    position: fixed; top: 1.2rem; right: 1.4rem;
+    width: 38px; height: 38px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+    color: #fff; font-size: 1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
+    z-index: 1003;
+  }
+  .lb-close:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.5); }
+  /* Side nav arrows */
+  .lb-nav {
+    position: fixed; top: 50%; transform: translateY(-50%);
+    width: 44px; height: 44px;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 50%;
+    background: rgba(255,255,255,0.07);
+    color: #fff; font-size: 1.3rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+    z-index: 1003;
+  }
+  .lb-nav:hover { background: rgba(255,255,255,0.2); }
+  .lb-nav.prev { left: 1.4rem; }
+  .lb-nav.next { right: 1.4rem; }
+  .lb-nav:disabled { opacity: 0.15; cursor: default; pointer-events: none; }
+
+  /* ── Responsive ─────────────────────────────────────── */
   @media (max-width: 600px) {
     .page-wrap { padding: 0.4rem 1rem 1rem; }
     .card { padding: 1.5rem 1.2rem 1.5rem; }
@@ -154,6 +294,8 @@
     .photo-item:nth-child(5) { grid-column: 1;     grid-row: 4; }
     .photo-item:nth-child(6) { grid-column: 2;     grid-row: 4; }
     .photo-item:nth-child(7) { grid-column: 1 / 3; grid-row: 5; }
+    .lb-nav.prev { left: 0.5rem; }
+    .lb-nav.next { right: 0.5rem; }
   }
 </style>
 </head>
@@ -177,7 +319,6 @@
     </div>
     <span class="on-sale-watermark">gallery</span>
 
-    <!-- Grid: 7 slots, images injected by JS -->
     <div class="grid">
       <div class="photo-item"><img src="" alt=""><div class="photo-label"><span class="price"></span><span class="author"></span></div></div>
       <div class="photo-item"><img src="" alt=""><div class="photo-label"><span class="price"></span><span class="author"></span></div></div>
@@ -202,10 +343,25 @@
   </div>
 </div>
 
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <div class="lb-backdrop" onclick="closeLightbox()"></div>
+  <span class="lb-counter" id="lb-counter"></span>
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <button class="lb-nav prev" id="lb-prev" onclick="lbNav(-1)">‹</button>
+  <button class="lb-nav next" id="lb-next" onclick="lbNav(1)">›</button>
+  <div class="lb-inner">
+    <img id="lb-img" src="" alt="">
+    <div class="lb-meta">
+      <span class="lb-title" id="lb-title"></span>
+      <span class="lb-price" id="lb-price"></span>
+    </div>
+  </div>
+</div>
+
 <script>
 // ============================================================
 //  EDIT YOUR PAGES HERE
-//  Each page = array of 7 items (matches the 7 grid slots)
 //
 //  Slot positions:
 //    [0] = big tall left image
@@ -217,10 +373,10 @@
 //    [6] = bottom row right
 //
 //  Each item:
-//    src   : image path   e.g. "assests/img_1.jpg"
-//    title : label text   e.g. "Artwork 1"
-//    price : price text   e.g. "1,200 AED"
-//    pos   : crop focus   e.g. "center center" or "50% 30%"
+//    src   : "assests/img_1.jpg"
+//    title : "Artwork 1"
+//    price : "1,200 AED"
+//    pos   : "center center"  or  "50% 30%"
 // ============================================================
 
 const pages = [
@@ -237,7 +393,6 @@ const pages = [
   ],
 
   // ── PAGE 2 ──────────────────────────────────────────────
-  // Replace src values with your actual page 2 image files
   [
     { src: "assests/img_2.jpeg", title: "Artwork 8",  price: "AED", pos: "center center" },
     { src: "assests/img_3.jpeg", title: "Artwork 9",  price: "AED", pos: "center center" },
@@ -249,7 +404,6 @@ const pages = [
   ],
 
   // ── PAGE 3 ──────────────────────────────────────────────
-  // Replace src values with your actual page 3 image files
   [
     { src: "assests/img_7.PNG",  title: "Artwork 15", price: "AED", pos: "center center" },
     { src: "assests/img_1.jpg",  title: "Artwork 16", price: "AED", pos: "center center" },
@@ -267,20 +421,41 @@ const pages = [
 // ============================================================
 
 let currentPage = 0;
+let lbIndex     = 0;
 
-const items   = document.querySelectorAll('.photo-item');
-const btnPrev = document.getElementById('btn-prev');
-const btnNext = document.getElementById('btn-next');
+const items     = document.querySelectorAll('.photo-item');
+const btnPrev   = document.getElementById('btn-prev');
+const btnNext   = document.getElementById('btn-next');
+const lb        = document.getElementById('lightbox');
+const lbImg     = document.getElementById('lb-img');
+const lbTitle   = document.getElementById('lb-title');
+const lbPrice   = document.getElementById('lb-price');
+const lbCounter = document.getElementById('lb-counter');
+const lbPrev    = document.getElementById('lb-prev');
+const lbNext    = document.getElementById('lb-next');
 
+// ── Add hover hint icon to every grid item ────────────────
+items.forEach((item, i) => {
+  // Hover expand icon
+  const hint = document.createElement('div');
+  hint.className = 'hover-hint';
+  hint.innerHTML = `<div class="hover-hint-icon">
+    <svg viewBox="0 0 24 24"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+  </div>`;
+  item.appendChild(hint);
+
+  // Click opens lightbox
+  item.addEventListener('click', () => openLightbox(i));
+});
+
+// ── Render page ───────────────────────────────────────────
 function renderPage(index) {
   const data = pages[index];
   const imgs = document.querySelectorAll('.photo-item img');
 
-  // Step 1: fade out all images
   imgs.forEach(img => img.classList.add('fading'));
 
   setTimeout(() => {
-    // Step 2: swap content
     items.forEach((item, i) => {
       const d      = data[i];
       const img    = item.querySelector('img');
@@ -292,19 +467,13 @@ function renderPage(index) {
       img.style.objectPosition = d.pos;
       price.textContent  = d.title;
       author.textContent = d.price;
-
-      // Step 3: fade back in
       img.classList.remove('fading');
     });
 
-    // Update pagination display
     document.querySelector('.page-current').textContent = index + 1;
     document.querySelector('.page-total').textContent   = '\u00a0/\u00a0' + pages.length;
-
-    // Disable/enable arrows
     btnPrev.disabled = index === 0;
     btnNext.disabled = index === pages.length - 1;
-
   }, 300);
 }
 
@@ -313,7 +482,49 @@ function changePage(dir) {
   renderPage(currentPage);
 }
 
-// Init on load
+// ── Lightbox ──────────────────────────────────────────────
+function updateLightbox() {
+  const d = pages[currentPage][lbIndex];
+  lbImg.style.opacity = '0';
+  setTimeout(() => {
+    lbImg.src             = d.src;
+    lbImg.alt             = d.title;
+    lbTitle.textContent   = d.title;
+    lbPrice.textContent   = d.price;
+    lbCounter.textContent = (lbIndex + 1) + ' / ' + pages[currentPage].length;
+    lbPrev.disabled       = lbIndex === 0;
+    lbNext.disabled       = lbIndex === pages[currentPage].length - 1;
+    lbImg.style.opacity   = '1';
+  }, 180);
+}
+
+function openLightbox(index) {
+  lbIndex = index;
+  lb.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  lbImg.style.transition = 'opacity 0.18s ease';
+  updateLightbox();
+}
+
+function closeLightbox() {
+  lb.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function lbNav(dir) {
+  lbIndex = Math.max(0, Math.min(pages[currentPage].length - 1, lbIndex + dir));
+  updateLightbox();
+}
+
+// Keyboard support
+document.addEventListener('keydown', e => {
+  if (!lb.classList.contains('active')) return;
+  if (e.key === 'Escape')      closeLightbox();
+  if (e.key === 'ArrowLeft')   lbNav(-1);
+  if (e.key === 'ArrowRight')  lbNav(1);
+});
+
+// Init
 renderPage(0);
 </script>
 </body>
