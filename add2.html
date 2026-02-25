@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add 2</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="nav.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #3d3528; min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, rgba(120,100,60,0.3) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(80,60,30,0.4) 0%, transparent 50%);
+  }
+  .page-wrap { padding: 0.6in 1in 1in; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+  .card {
+    background: #fdfcfa; border-radius: 4px;
+    padding: 4rem 3rem;
+    box-shadow: 0 40px 100px rgba(0,0,0,0.5), 0 8px 24px rgba(0,0,0,0.3);
+    animation: fadeUp 0.5s ease both;
+    text-align: center;
+  }
+  .page-tag {
+    display: inline-block;
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em;
+    color: #6b6860; border: 1px solid #c9a96e;
+    padding: 0.3rem 0.9rem; border-radius: 2px; margin-bottom: 1.5rem;
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 6vw, 4rem); color: #1a1a18; margin-bottom: 1rem;
+  }
+  p { font-size: 0.95rem; color: #a8a49e; max-width: 420px; margin: 0 auto; line-height: 1.8; }
+  .placeholder-icon {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: #f0ece5; display: flex; align-items: center;
+    justify-content: center; margin: 2rem auto 0;
+    font-size: 2rem;
+  }
+  @media (max-width: 600px) {
+    .page-wrap { padding: 0.4rem 1rem 1rem; }
+    .card { padding: 2.5rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+<nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="contact.html">Contact Us</a>
+  <a href="about.html">About Us</a>
+  <a href="add1.html">Add 1</a>
+  <a href="add2.html" class="active">Add 2</a>
+</nav>
+<div class="page-wrap">
+  <div class="card">
+    <div class="page-tag">Page</div>
+    <h1>Add 2</h1>
+    <p>This page is ready for your content. Add whatever you need here.</p>
+    <div class="placeholder-icon">❋</div>
+  </div>
+</div>
+</body>
+</html>

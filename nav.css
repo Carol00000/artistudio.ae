@@ -1,0 +1,55 @@
+/* ── Shared nav bar ───────────────────────── */
+.navbar {
+  width: 100%;
+  background: rgba(42, 35, 24, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-sizing: border-box;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.navbar a {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.38);
+  text-decoration: none;
+  padding: 1rem 1.4rem;
+  position: relative;
+  transition: color 0.2s;
+  white-space: nowrap;
+}
+
+.navbar a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 1.4rem;
+  right: 1.4rem;
+  height: 1px;
+  background: #c9a96e;
+  transform: scaleX(0);
+  transition: transform 0.25s;
+}
+
+.navbar a:hover { color: rgba(255,255,255,0.75); }
+.navbar a:hover::after { transform: scaleX(1); }
+
+.navbar a.active { color: #fff; }
+.navbar a.active::after { transform: scaleX(1); }
+
+@media (max-width: 600px) {
+  .navbar { justify-content: flex-start; overflow-x: auto; }
+  .navbar a { padding: 0.85rem 0.9rem; font-size: 0.66rem; }
+  .navbar a::after { left: 0.9rem; right: 0.9rem; }
+}
